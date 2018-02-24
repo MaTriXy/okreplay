@@ -9,11 +9,11 @@ import java.io.File
 import java.lang.RuntimeException
 
 /** Provides a directory for OkReplay to store its tapes in. */
-class AndroidTapeRoot(private val assetManager: AssetManager, testName: String) :
+open class AndroidTapeRoot(private val assetManager: AssetManager, testName: String) :
     DefaultTapeRoot(getSdcardDir(assetManager.context, testName)) {
   constructor(context: Context, klass: Class<*>) : this(AssetManager(context), klass.simpleName)
 
-  internal val assetsDirPrefix = "tapes/$testName"
+  private val assetsDirPrefix = "tapes/$testName"
 
   override fun readerFor(tapeFileName: String) =
       // Instead of reading from the sdcard, we'll read tapes from the instrumentation apk assets

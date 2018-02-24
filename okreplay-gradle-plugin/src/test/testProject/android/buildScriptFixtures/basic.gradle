@@ -1,7 +1,9 @@
 buildscript {
+  ext.VERSION_NAME='1.4.0-SNAPSHOT'
   apply from: "../../../../gradle/dependencies.gradle"
   repositories {
     jcenter()
+    google()
   }
 
   dependencies {
@@ -27,9 +29,10 @@ android {
 
 repositories {
   jcenter()
+  google()
   maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
 }
 
 dependencies {
-  compile dep.appcompat
+  implementation dep.appcompat
 }

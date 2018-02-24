@@ -1,12 +1,9 @@
 package okreplay;
 
-import com.google.common.base.Optional;
-
 public enum TapeMode {
-
   UNDEFINED(false, false, false), READ_WRITE(true, true, false), READ_ONLY(true, false, false),
-  READ_SEQUENTIAL(true, false, true), WRITE_ONLY(false, true, false), WRITE_SEQUENTIAL(false,
-      true, true);
+  READ_ONLY_QUIET(true, false, false), READ_SEQUENTIAL(true, false, true), WRITE_ONLY(false,
+      true, false), WRITE_SEQUENTIAL(false, true, true);
 
   private final boolean readable;
   private final boolean writable;

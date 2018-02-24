@@ -1,36 +1,34 @@
 package okreplay;
 
-import com.google.common.base.Strings;
-import com.google.common.net.MediaType;
+import java.nio.charset.Charset;
 
-import java.io.UnsupportedEncodingException;
+import okhttp3.MediaType;
 
-import static com.google.common.base.Charsets.UTF_8;
-import static com.google.common.net.HttpHeaders.CONTENT_ENCODING;
-import static com.google.common.net.HttpHeaders.CONTENT_TYPE;
-import static com.google.common.net.MediaType.OCTET_STREAM;
+import static okreplay.Util.CONTENT_TYPE;
+import static okreplay.Util.isNullOrEmpty;
 
 abstract class AbstractMessage implements Message {
-  private static final String DEFAULT_CONTENT_TYPE = OCTET_STREAM.toString();
-  private static final String DEFAULT_CHARSET = UTF_8.toString();
+  private static final String CONTENT_ENCODING = "Content-Encoding";
+  private static final Charset UTF_8 = Charset.forName("UTF-8");
+  static final String DEFAULT_CONTENT_TYPE = "application/octet-stream";
   private static final String DEFAULT_ENCODING = "none";
 
   @Override public String getContentType() {
     String header = header(CONTENT_TYPE);
-    if (Strings.isNullOrEmpty(header)) {
+    if (isNullOrEmpty(header)) {
       return DEFAULT_CONTENT_TYPE;
     } else {
-      return MediaType.parse(header).withoutParameters().toString();
+      return MediaType.parse(header).toString();
     }
   }
 
-  @Override public String getCharset() {
+  @Override public Charset getCharset() {
     String header = header(CONTENT_TYPE);
-    if (Strings.isNullOrEmpty(header)) {
+    if (isNullOrEmpty(header)) {
       // TODO: this isn't valid for non-text data – this method should return Optional<String>
-      return DEFAULT_CHARSET;
+      return UTF_8;
     } else {
-      return MediaType.parse(header).charset().or(UTF_8).toString();
+      return Optional.fromNullable(MediaType.parse(header).charset()).or(UTF_8);
     }
   }
 
@@ -43,11 +41,7 @@ abstract class AbstractMessage implements Message {
     return headers().get(name);
   }
 
-  @Override public final String getBodyAsText() {
-    try {
-      return new String(getBody(), getCharset());
-    } catch (UnsupportedEncodingException e) {
-      throw new RuntimeException(e);
-    }
+  @Override public final String bodyAsText() {
+    return new String(body(), getCharset());
   }
 }

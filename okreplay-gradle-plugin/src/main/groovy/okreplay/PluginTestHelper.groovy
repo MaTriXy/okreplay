@@ -8,25 +8,7 @@ class PluginTestHelper {
     setupAndroidProject(project)
     project.android {
       compileSdkVersion 25
-      buildToolsVersion "25.0.2"
-    }
-  }
-
-  static def setupAndroidProjectWithProductFlavours(Project project) {
-    setupAndroidProject(project)
-    project.android {
-      compileSdkVersion 25
-      buildToolsVersion "25.0.2"
-      productFlavors {
-        demo {
-          applicationIdSuffix ".demo"
-          versionNameSuffix "-demo"
-        }
-        full {
-          applicationIdSuffix ".full"
-          versionNameSuffix "-full"
-        }
-      }
+      buildToolsVersion "25.0.3"
     }
   }
 
@@ -71,7 +53,7 @@ class PluginTestHelper {
     }
   }
 
-  static def File createTempTestDirectory(String testProjectName) {
+  static File createTempTestDirectory(String testProjectName) {
     File dir = new File(System.getProperty("user.dir"), "build/inegrationTests/$testProjectName")
     FileUtils.deleteDirectory(dir)
     FileUtils.forceMkdir(dir)

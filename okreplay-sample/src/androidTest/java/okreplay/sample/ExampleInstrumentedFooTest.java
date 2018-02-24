@@ -39,7 +39,7 @@ public class ExampleInstrumentedFooTest {
       new ActivityTestRule<>(MainActivity.class);
   private final OkReplayConfig configuration = new OkReplayConfig.Builder()
       .tapeRoot(new AndroidTapeRoot(new AssetManager(getContext()), getClass().getSimpleName()))
-      .defaultMode(TapeMode.READ_ONLY)
+      .defaultMode(TapeMode.READ_WRITE)
       .sslEnabled(true)
       .interceptor(graph.getOkReplayInterceptor())
       .defaultMatchRules(MatchRules.host, MatchRules.path, MatchRules.method)
