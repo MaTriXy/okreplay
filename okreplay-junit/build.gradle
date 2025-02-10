@@ -1,12 +1,13 @@
+apply plugin: 'java-library'
 apply plugin: 'org.jetbrains.kotlin.jvm'
+apply plugin: 'com.vanniktech.maven.publish'
 
 dependencies {
-  compile project(":okreplay-core")
-  compile dep.junit
-  compile dep.kotlinStdLib
+  api project(":okreplay-core")
+  implementation dep.kotlinStdLib
+  implementation dep.junit
+  implementation dep.kotlinStdLib
 }
 
 sourceCompatibility = "1.7"
 targetCompatibility = "1.7"
-
-apply from: rootProject.file('gradle/gradle-mvn-push.gradle')

@@ -2,6 +2,7 @@ package okreplay
 
 import org.junit.rules.TestRule
 import org.junit.runner.Description
+import org.junit.Rule
 import org.junit.runners.model.Statement
 import java.util.logging.Level
 import java.util.logging.Logger
@@ -9,7 +10,7 @@ import okreplay.CaseFormat.*
 
 /**
  * This is an extension of [Recorder] that can be used as a
- * _JUnit @Rule_ allowing tests annotated with `@OkReplay` to automatically
+ * JUnit [Rule] allowing tests annotated with [OkReplay] to automatically
  * activate OkReplay recording.
  */
 class RecorderRule(configuration: OkReplayConfig) : Recorder(configuration), TestRule {
@@ -18,10 +19,9 @@ class RecorderRule(configuration: OkReplayConfig) : Recorder(configuration), Tes
     if (annotation != null) {
       LOG.info(String.format("found @OkReplay annotation on '%s'", description.displayName))
       return object : Statement() {
-        @Throws(Throwable::class)
         override fun evaluate() {
           try {
-            val tapeName = if (annotation.tape.isNullOrEmpty()) {
+            val tapeName = if (annotation.tape.isEmpty()) {
               description.defaultTapeName()
             } else {
               annotation.tape
@@ -29,11 +29,11 @@ class RecorderRule(configuration: OkReplayConfig) : Recorder(configuration), Tes
             val tapeMode = annotation.mode
             val matchRules = annotation.match
             val matchRule = if (matchRules.isNotEmpty()) {
-              Optional.of(ComposedMatchRule.of(*matchRules))
+              ComposedMatchRule.of(*matchRules)
             } else {
-              Optional.absent<MatchRule>()
+              null
             }
-            start(tapeName, tapeMode.toOptional(), matchRule)
+            start(tapeName, tapeMode.toNullable(), matchRule)
             statement.evaluate()
           } catch (e: Exception) {
             LOG.log(Level.SEVERE, "Caught exception starting OkReplay", e)

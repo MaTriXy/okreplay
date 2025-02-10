@@ -1,8 +1,8 @@
 package okreplay.sample
 
 import android.os.Bundle
-import android.support.design.widget.BottomNavigationView
-import android.support.v7.app.AppCompatActivity
+import com.google.android.material.bottomnavigation.BottomNavigationView
+import androidx.appcompat.app.AppCompatActivity
 import android.util.Log
 import android.widget.TextView
 import com.google.common.base.Joiner
@@ -55,13 +55,13 @@ class MainActivity : AppCompatActivity() {
   override fun onCreate(savedInstanceState: Bundle?) {
     super.onCreate(savedInstanceState)
     setContentView(R.layout.activity_main)
-    textMessage = findViewById<TextView>(R.id.message)
+    textMessage = findViewById(R.id.message)
     val navigation = findViewById<BottomNavigationView>(R.id.navigation)
     navigation.setOnNavigationItemSelectedListener(itemSelectedListener)
   }
 
   companion object {
-    private val TAG = "MainActivity"
-    private val USERNAME = "felipecsl"
+    private const val TAG = "MainActivity"
+    private const val USERNAME = "felipecsl"
   }
 }

@@ -12,7 +12,6 @@ import static okreplay.Util.VIA;
  * Represents a set of recorded HTTP interactions that can be played back or
  * appended to.
  */
-@SuppressWarnings("OptionalUsedAsFieldOrParameterType")
 abstract class MemoryTape implements Tape {
   private String name;
   private List<YamlRecordedInteraction> interactions = new ArrayList<>();
@@ -73,7 +72,7 @@ abstract class MemoryTape implements Tape {
       try {
         // TODO: it's a complete waste of time using an AtomicInteger when this method is called
         // before play in a non-transactional way
-        Integer index = orderedIndex.get();
+        int index = orderedIndex.get();
         RecordedInteraction interaction = interactions.get(index).toImmutable();
         Request nextRequest = interaction == null ? null : interaction.request();
         return nextRequest != null && matchRule.isMatch(request, nextRequest);
@@ -91,7 +90,7 @@ abstract class MemoryTape implements Tape {
     }
 
     if (mode.isSequential()) {
-      Integer nextIndex = orderedIndex.getAndIncrement();
+      int nextIndex = orderedIndex.getAndIncrement();
       RecordedInteraction nextInteraction = interactions.get(nextIndex).toImmutable();
       if (nextInteraction == null) {
         throw new IllegalStateException(String.format("No recording found at position %s",
